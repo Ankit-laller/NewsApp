@@ -2,10 +2,12 @@ package com.example.newsapp
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.DefaultRetryPolicy
@@ -17,7 +19,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NewsItemClicked {
 
     private lateinit var newsRecyclerView: RecyclerView
     private lateinit var newsArray:ArrayList<News>
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         newsArray = ArrayList()
 
         fetchData()
-        adapter = NewsAdapter()
+        adapter = NewsAdapter(this)
         newsRecyclerView.adapter = adapter
 
     }
@@ -39,8 +41,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun fetchData() {
-        val url ="https://newsdata.io/api/1/news?apikey=pub_16067e8ab26e081f558cd1cf429260ecf04b8&q=Indian%20IT%20sector "
-        val url2 ="https://newsapi.org/v2/everything?q=tesla&from=2022-12-27&sortBy=publishedAt&apiKey=ed1c2752375543da9dc2d9cf85cd1895"
+        val url ="https://newsdata.io/api/1/news?apikey=pub_16067e8ab26e081f558cd1cf429260ecf04b8&q=Internship&country=in&language=en&category=top "
+        val url2 ="https://newsdata.io/api/1/news?apikey=pub_16067e8ab26e081f558cd1cf429260ecf04b8&q=war%20in%20Europe "
         val queue =Volley.newRequestQueue(this)
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET,
@@ -52,7 +54,10 @@ class MainActivity : AppCompatActivity() {
                     val newsJsonObject = newsJSonArray.getJSONObject(i)
                     val news = News(
                         newsJsonObject.getString("title"),
-                        newsJsonObject.getString("description")
+                        newsJsonObject.getString("description"),
+                        newsJsonObject.getString("image_url"),
+                        newsJsonObject.getString("source_id"),
+                        newsJsonObject.getString("link")
                     )
                     newsArray.add(news)
                 }
@@ -72,5 +77,10 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    override fun onItemClicked(item: News) {
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(item.url))
+    }
 
 }
