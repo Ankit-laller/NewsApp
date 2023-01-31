@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.AuthFailureError
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
@@ -42,30 +43,37 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
 
     private fun fetchData() {
         val url ="https://newsdata.io/api/1/news?apikey=pub_16067e8ab26e081f558cd1cf429260ecf04b8&q=Internship&country=in&language=en&category=top "
-        val url2 ="https://newsdata.io/api/1/news?apikey=pub_16067e8ab26e081f558cd1cf429260ecf04b8&q=war%20in%20Europe "
+        val url2 ="https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=ed1c2752375543da9dc2d9cf85cd1895"
         val queue =Volley.newRequestQueue(this)
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.GET,
-            url,null,
+        val jsonObjectRequest =object: JsonObjectRequest(
+            Method.GET,
+            url2,null,
             Response.Listener{
-                val newsJSonArray =it.getJSONArray("results")
+                val newsJSonArray =it.getJSONArray("articles")
                 Log.d("Test",it.toString())
                 for(i in 0 until newsJSonArray.length()) {
                     val newsJsonObject = newsJSonArray.getJSONObject(i)
                     val news = News(
                         newsJsonObject.getString("title"),
                         newsJsonObject.getString("description"),
-                        newsJsonObject.getString("image_url"),
-                        newsJsonObject.getString("source_id"),
-                        newsJsonObject.getString("link")
+                        newsJsonObject.getString("urlToImage"),
+//                        newsJsonObject.getString("source_id"),
+                        newsJsonObject.getString("url")
                     )
                     newsArray.add(news)
                 }
                 adapter.updateNews(newsArray)
-            },Response.ErrorListener {
-
-            }
+            },Response.ErrorListener {}
         )
+        {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String>? {
+                val headers = HashMap<String, String>()
+                //headers.put("Content-Type", "application/json");
+                headers["User-Agent"] = "Mozilla/5.0"
+                return headers
+            }
+        }
 //        jsonObjectRequest.setRetryPolicy(
 //            DefaultRetryPolicy(
 //                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,

@@ -23,7 +23,7 @@ class NewsAdapter(private val listener :NewsItemClicked) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = newsList[position]
         holder.NewsHeading.text =current.Heading
-        holder.source.text = current.source
+//        holder.source.text = current.source
         Glide.with(holder.itemView.context).load(current.imageUrl).into(holder.image)
     }
 

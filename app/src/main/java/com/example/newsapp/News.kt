@@ -4,6 +4,6 @@ package com.example.newsapp
     var Heading :String? = null,
     var NewsDetail :String? = null,
     var imageUrl :String? = null,
-    var source:String? =null,
+//    var source:String? =null,
     var url:String?=null
         )
