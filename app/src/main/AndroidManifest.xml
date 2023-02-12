@@ -15,8 +15,9 @@
         android:theme="@style/Theme.NewsApp"
         tools:targetApi="31">
         <activity
-            android:name=".Nations"
-            android:exported="true">
+            android:name=".NewsSections"
+            android:exported="true"
+            android:theme="@style/Theme.NewsApp.NoActionBar">
 
             <meta-data
                 android:name="android.app.lib_name"
@@ -31,7 +32,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".NewsSections"
+            android:name=".Nations"
             android:exported="true"
             android:theme="@style/Theme.NewsApp.NoActionBar">
             <intent-filter>

@@ -24,10 +24,10 @@ internal class TabAdapter (var context:Context, fm :FragmentManager, var totalTa
                 BusinessFrag()
             }
             2->{
-                SportsFrag()
+                ScienceFrag()
             }
             3->{
-                ScienceFrag()
+                SportsFrag()
             }
             else -> getItem(position)
         }
