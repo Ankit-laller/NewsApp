@@ -16,6 +16,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.AuthFailureError
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -98,13 +99,13 @@ class HomeFrag : Fragment() ,NewsItemClicked2{
                 return headers
             }
         }
-//        jsonObjectRequest.setRetryPolicy(
-//            DefaultRetryPolicy(
-//                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-//                2,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-//            )
-//        )
+        jsonObjectRequest.setRetryPolicy(
+            DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                2,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+        )
         queue.add(jsonObjectRequest)
     }
 

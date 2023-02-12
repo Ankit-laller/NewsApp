@@ -17,6 +17,7 @@ import com.example.newsapp.databinding.ActivityMainBinding
 class Nations : AppCompatActivity() {
     private lateinit var radioGroup: RadioGroup
     private lateinit var radioButton: RadioButton
+    private  var userName : EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,16 +26,20 @@ class Nations : AppCompatActivity() {
         radioGroup = findViewById(R.id.radioGroup)
         var btn = findViewById<Button>(R.id.nationbtn)
 
+        userName = findViewById(R.id.userName)
         btn.setOnClickListener {
             val intent =Intent(this, NewsSections::class.java)
 
 
             val selectBtn :Int = radioGroup!!.checkedRadioButtonId
             val btn2 = findViewById<RadioButton>(selectBtn)
-            Toast.makeText(this,btn2.text.toString(), Toast.LENGTH_SHORT).show()
 
-            intent.putExtra("nation", btn2.text.toString())
-            startActivity(intent)
+                Toast.makeText(this,btn2.text.toString(), Toast.LENGTH_SHORT).show()
+
+                intent.putExtra("nation", btn2.text.toString())
+                intent.putExtra("userName", userName!!.text.toString())
+                startActivity(intent)
+
         }
 
     }
