@@ -14,10 +14,12 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.AuthFailureError
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.newsapp.NewsDetails
+import com.example.newsapp.NewsSections
 import com.example.newsapp.R
 import com.example.newsapp.adapters.NewsItemClicked2
 import com.example.newsapp.adapters.businessAdapter
@@ -27,6 +29,7 @@ class BusinessFrag : Fragment(), NewsItemClicked2 {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: businessAdapter
     private lateinit var newsArray:ArrayList<NewsModel>
+    private var nation:String?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +40,7 @@ class BusinessFrag : Fragment(), NewsItemClicked2 {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        recieveData()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_business, container, false)
     }
@@ -53,9 +57,13 @@ class BusinessFrag : Fragment(), NewsItemClicked2 {
         adapter = businessAdapter(this)
         recyclerView.adapter = adapter
     }
+    private fun recieveData() {
+        var d = (requireActivity() as NewsSections).sendData()
+        nation =d
+    }
 
     private fun fetchData_Bus(context:Context?) {
-        val url2 ="https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=ed1c2752375543da9dc2d9cf85cd1895"
+        val url2 ="https://newsapi.org/v2/top-headlines?country=$nation&category=business&apiKey=ed1c2752375543da9dc2d9cf85cd1895"
         val queue = Volley.newRequestQueue(context)
         val jsonObjectRequest =object: JsonObjectRequest(
             Method.GET,
@@ -85,13 +93,13 @@ class BusinessFrag : Fragment(), NewsItemClicked2 {
                 return headers
             }
         }
-//        jsonObjectRequest.setRetryPolicy(
-//            DefaultRetryPolicy(
-//                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-//                2,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-//            )
-//        )
+        jsonObjectRequest.setRetryPolicy(
+            DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                2,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+        )
         queue.add(jsonObjectRequest)
     }
 

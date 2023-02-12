@@ -10,17 +10,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.AuthFailureError
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.newsapp.Nations
-import com.example.newsapp.News
-import com.example.newsapp.NewsDetails
-import com.example.newsapp.R
+import com.example.newsapp.*
 import com.example.newsapp.adapters.NewsItemClicked2
 import com.example.newsapp.adapters.businessAdapter
 
@@ -29,27 +29,33 @@ class HomeFrag : Fragment() ,NewsItemClicked2{
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: businessAdapter
     private lateinit var newsArray:ArrayList<NewsModel>
+    private lateinit var txt :TextView
 
-    var nation = Nations.nation
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    var nation :String? =null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        var view = inflater.inflate(R.layout.fragment_home, container, false)
+
+
+        recieveData()
+        return view
+    }
+
+    private fun recieveData() {
+        var d = (requireActivity() as NewsSections).sendData()
+        nation =d
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view!!.findViewById(R.id.home_newsRV)
+        recyclerView = requireView().findViewById(R.id.home_newsRV)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.hasFixedSize()
@@ -58,12 +64,10 @@ class HomeFrag : Fragment() ,NewsItemClicked2{
         adapter = businessAdapter(this)
         recyclerView.adapter = adapter
 
-
-
-
     }
 
     private fun fetchData_Bus(context: Context?) {
+//        nation ="us"
         val url2 ="https://newsapi.org/v2/top-headlines?country=$nation&apiKey=ed1c2752375543da9dc2d9cf85cd1895"
         val queue = Volley.newRequestQueue(context)
         val jsonObjectRequest =object: JsonObjectRequest(
@@ -95,13 +99,13 @@ class HomeFrag : Fragment() ,NewsItemClicked2{
                 return headers
             }
         }
-//        jsonObjectRequest.setRetryPolicy(
-//            DefaultRetryPolicy(
-//                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-//                2,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-//            )
-//        )
+        jsonObjectRequest.setRetryPolicy(
+            DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                2,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+        )
         queue.add(jsonObjectRequest)
     }
 
@@ -114,5 +118,6 @@ class HomeFrag : Fragment() ,NewsItemClicked2{
         intent.putExtra("url", item.url)
         startActivity(intent)
     }
+
 
 }

@@ -18,6 +18,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.newsapp.NewsDetails
+import com.example.newsapp.NewsSections
 import com.example.newsapp.R
 import com.example.newsapp.adapters.NewsItemClicked2
 import com.example.newsapp.adapters.businessAdapter
@@ -26,22 +27,21 @@ class ScienceFrag : Fragment(), NewsItemClicked2 {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: businessAdapter
     private lateinit var newsArray:ArrayList<NewsModel>
+    private var nation :String? =null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        recieveData()
         return inflater.inflate(R.layout.fragment_science, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view!!.findViewById(R.id.science_newsRV)
+        recyclerView = requireView().findViewById(R.id.science_newsRV)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.hasFixedSize()
@@ -49,10 +49,15 @@ class ScienceFrag : Fragment(), NewsItemClicked2 {
         fetchData_Bus(context)
         adapter = businessAdapter(this)
         recyclerView.adapter = adapter
+
+    }
+    private fun recieveData() {
+        var d = (requireActivity() as NewsSections).sendData()
+        nation =d
     }
 
     private fun fetchData_Bus(context: Context?) {
-        val url2 ="https://newsapi.org/v2/top-headlines?country=in&category=science&apiKey=ed1c2752375543da9dc2d9cf85cd1895"
+        val url2 ="https://newsapi.org/v2/top-headlines?country=$nation&category=science&apiKey=ed1c2752375543da9dc2d9cf85cd1895"
         val queue = Volley.newRequestQueue(context)
         val jsonObjectRequest =object: JsonObjectRequest(
             Method.GET,
