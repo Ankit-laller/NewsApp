@@ -7,12 +7,20 @@
 
 
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-
         >
+        <ProgressBar
+            android:id="@+id/homeProgess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+
+            />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_newsRV"
