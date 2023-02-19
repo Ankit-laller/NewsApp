@@ -4,14 +4,12 @@ import Model.NewsModel
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.activityViewModels
@@ -32,7 +30,6 @@ class HomeFrag : Fragment() ,NewsItemClicked2{
     private lateinit var adapter: businessAdapter
     private lateinit var newsArray:ArrayList<NewsModel>
     private lateinit var txt :TextView
-    private lateinit var ProgessBar:ProgressBar
 
 
     var nation :String? =null
@@ -44,7 +41,7 @@ class HomeFrag : Fragment() ,NewsItemClicked2{
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        ProgessBar = view.findViewById(R.id.homeProgess)
+
         recieveData()
         return view
     }
@@ -63,9 +60,7 @@ class HomeFrag : Fragment() ,NewsItemClicked2{
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.hasFixedSize()
         newsArray = ArrayList()
-        ProgessBar.visibility = View.VISIBLE
         fetchData_Bus(context)
-        ProgessBar.visibility = View.GONE
         adapter = businessAdapter(this)
         recyclerView.adapter = adapter
 
@@ -73,7 +68,6 @@ class HomeFrag : Fragment() ,NewsItemClicked2{
 
     private fun fetchData_Bus(context: Context?) {
 //        nation ="us"
-
         val url2 ="https://newsapi.org/v2/top-headlines?country=$nation&apiKey=ed1c2752375543da9dc2d9cf85cd1895"
         val queue = Volley.newRequestQueue(context)
         val jsonObjectRequest =object: JsonObjectRequest(

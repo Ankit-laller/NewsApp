@@ -1,7 +1,6 @@
 package com.example.newsapp
 
 import Model.NewsModel
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -43,20 +42,18 @@ class NewsSections : AppCompatActivity() , NewsItemClicked2{
     private  var nation:String? = null
     private lateinit var tabLayout :TabLayout
     private lateinit var viewPager :ViewPager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news_sections)
-        var token  = getSharedPreferences("nation", Context.MODE_PRIVATE)
+
 
         var nationChooser = findViewById<ImageButton>(R.id.nationChooser)
         nationChooser.setOnClickListener {
             val intent = Intent(this,Nations::class.java)
-            token.edit().putString("nation"," ").commit()
             onResume()
             startActivity(intent)
         }
-
+         nation =intent.getStringExtra("nation")
         var userName = intent.getStringExtra("userName")
         var user = findViewById<TextView>(R.id.user)
         user.setText(userName)
@@ -113,9 +110,9 @@ class NewsSections : AppCompatActivity() , NewsItemClicked2{
 
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.home ->         Toast.makeText(this,"home",Toast.LENGTH_SHORT).show()
-                R.id.business -> Toast.makeText(this,"home",Toast.LENGTH_SHORT).show()
-                R.id.science -> Toast.makeText(this,"home",Toast.LENGTH_SHORT).show()
+                R.id.home -> Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
+                R.id.business -> supportFragmentManager.beginTransaction().replace(R.id.viewPager,BusinessFrag()).commit()
+                R.id.science -> supportFragmentManager.beginTransaction().replace(R.id.viewPager,ScienceFrag()).commit()
                 R.id.nationChooser -> startActivity(Intent(this, Nations::class.java))
 
             }

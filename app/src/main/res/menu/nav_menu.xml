@@ -12,7 +12,7 @@
             android:title="Business"/>
     <item
         android:id="@+id/science"
-        android:title="Science"/>
+        android:title="Business"/>
 
     <item
         android:id="@+id/nationIcon"

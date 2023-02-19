@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,17 +30,16 @@ class SportsFrag : Fragment() , NewsItemClicked2{
     private lateinit var adapter: businessAdapter
     private lateinit var newsArray:ArrayList<NewsModel>
     private var nation:String?= null
-    private lateinit var ProgessBar: ProgressBar
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view =inflater.inflate(R.layout.fragment_sports, container, false)
         recieveData()
-        ProgessBar = view.findViewById(R.id.homeProgess4)
         // Inflate the layout for this fragment
-        return view
+        return inflater.inflate(R.layout.fragment_sports, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,9 +50,7 @@ class SportsFrag : Fragment() , NewsItemClicked2{
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.hasFixedSize()
         newsArray = ArrayList()
-        ProgessBar.visibility = View.VISIBLE
         fetchData_Bus(context)
-        ProgessBar.visibility = View.GONE
         adapter = businessAdapter(this)
         recyclerView.adapter = adapter
     }
