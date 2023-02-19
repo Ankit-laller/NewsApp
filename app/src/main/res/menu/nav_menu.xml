@@ -4,18 +4,22 @@
     tools:showIn ="navigation_view">
 
     <item
-        android:id="@+id/home"
-        android:title="Home"
+        android:id="@+id/latest"
+        android:title="Latest"
+        android:icon="@drawable/trend"
         />
         <item
             android:id="@+id/business"
-            android:title="Business"/>
+            android:title="Business"
+            android:icon="@drawable/money"/>
     <item
         android:id="@+id/science"
-        android:title="Science"/>
+        android:title="Science"
+        android:icon="@drawable/flask"/>
 
     <item
-        android:id="@+id/nationIcon"
-        android:title="Nation"
-        android:icon="@drawable/india"/>
+        android:id="@+id/sports"
+        android:title="Sports"
+        android:icon="@drawable/running"
+        />
 </menu>

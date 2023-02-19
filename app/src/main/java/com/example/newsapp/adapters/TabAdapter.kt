@@ -4,13 +4,14 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.example.newsapp.Fragments.BusinessFrag
 import com.example.newsapp.Fragments.HomeFrag
 import com.example.newsapp.Fragments.ScienceFrag
 import com.example.newsapp.Fragments.SportsFrag
 
 
-internal class TabAdapter (var context:Context, fm :FragmentManager, var totalTabs :Int): FragmentPagerAdapter(fm){
+internal class TabAdapter (var context:Context, fm :FragmentManager, var totalTabs :Int): FragmentStatePagerAdapter(fm){
     override fun getCount(): Int {
         return totalTabs
     }

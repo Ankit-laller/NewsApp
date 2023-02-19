@@ -46,7 +46,7 @@
             android:gravity="center"
             android:layout_margin="4dp"
             android:textColor="@drawable/custom_radio_text"
-            android:text="us"
+            android:text="USA"
             android:textSize="30dp"
             android:background="@drawable/custom_radio_selector"
             android:textStyle="bold" />
@@ -64,7 +64,7 @@
             android:elevation="10dp"
             android:textColor="@drawable/custom_radio_text"
             android:gravity="center"
-            android:text="in"
+            android:text="India"
             android:layout_margin="4dp"
             android:textSize="30dp"
             android:textStyle="bold" />
@@ -83,7 +83,7 @@
             android:button="@color/white"
             android:layout_margin="4dp"
             android:drawableLeft="@drawable/japan"
-            android:text="jp"
+            android:text="Japan"
             android:textSize="30dp"
             android:textStyle="bold" />
         <View
@@ -101,7 +101,7 @@
             android:drawableLeft="@drawable/uk"
             android:textColor="@drawable/custom_radio_text"
             android:background="@drawable/custom_radio_selector"
-            android:text="gb"
+            android:text="United Kingdom"
             android:textSize="30dp"
             android:textStyle="bold" />
         <View
