@@ -1,6 +1,7 @@
 package com.example.newsapp
 
 import Model.NewsModel
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -18,6 +19,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.android.volley.AuthFailureError
@@ -33,6 +35,7 @@ import com.example.newsapp.adapters.businessAdapter
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_news_sections.*
+import kotlinx.android.synthetic.main.nav_header.view.*
 import org.w3c.dom.Text
 
 class NewsSections : AppCompatActivity() , NewsItemClicked2{
@@ -47,19 +50,37 @@ class NewsSections : AppCompatActivity() , NewsItemClicked2{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news_sections)
-        var token  = getSharedPreferences("nation", Context.MODE_PRIVATE)
+//        var token  = getSharedPreferences("nation", Context.MODE_PRIVATE)
 
         var nationChooser = findViewById<ImageButton>(R.id.nationChooser)
+
         nationChooser.setOnClickListener {
             val intent = Intent(this,Nations::class.java)
-            token.edit().putString("nation"," ").commit()
-            onResume()
+//            token.edit().putString("nation"," ").commit()
+
             startActivity(intent)
+            finish()
         }
 
-        var userName = intent.getStringExtra("userName")
-        var user = findViewById<TextView>(R.id.user)
-        user.setText(userName)
+        var userName :String? = intent.getStringExtra("userName")
+        var nat = intent.getStringExtra("nation")
+        when(nat){
+            "USA"->{nationChooser.setBackgroundResource(R.drawable.usa)
+                    nation="us"
+            }
+            "India"-> {
+                nationChooser.setBackgroundResource(R.drawable.india)
+                nation = "in"
+            }
+            "Japan"-> {
+                nationChooser.setBackgroundResource(R.drawable.japan)
+                nation = "jp"
+            }
+            "United Kingdom"-> {
+                nationChooser.setBackgroundResource(R.drawable.uk)
+                nation = "gb"
+            }
+        }
 
 
         var userIcon = findViewById<ImageButton>(R.id.profile)
@@ -78,7 +99,7 @@ class NewsSections : AppCompatActivity() , NewsItemClicked2{
         tabLayout= findViewById(R.id.tablayout)
         viewPager = findViewById(R.id.viewPager)
 
-        tabLayout.addTab(tabLayout.newTab().setText("Home"))
+        tabLayout.addTab(tabLayout.newTab().setText("Latest"))
         tabLayout.addTab(tabLayout.newTab().setText("Business"))
         tabLayout.addTab(tabLayout.newTab().setText("Science"))
         tabLayout.addTab(tabLayout.newTab().setText("Sports"))
@@ -88,24 +109,25 @@ class NewsSections : AppCompatActivity() , NewsItemClicked2{
         viewPager.adapter = tabAdapter
 
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-//
-//        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                viewPager.currentItem = tab!!.position
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//                TODO("Not yet implemented")
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//                TODO("Not yet implemented")
-//            }
-//
-//        })
+
+        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewPager.currentItem = tab!!.position
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                viewPager.currentItem = tab!!.position
+            }
+
+        })
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerlayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
+        navView.getHeaderView(0).findViewById<TextView>(R.id.header_title).setText("Hey $userName")
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -113,13 +135,23 @@ class NewsSections : AppCompatActivity() , NewsItemClicked2{
 
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.home ->         Toast.makeText(this,"home",Toast.LENGTH_SHORT).show()
-                R.id.business -> Toast.makeText(this,"home",Toast.LENGTH_SHORT).show()
-                R.id.science -> Toast.makeText(this,"home",Toast.LENGTH_SHORT).show()
-                R.id.nationChooser -> startActivity(Intent(this, Nations::class.java))
-
+                R.id.latest -> {
+                    viewPager.setCurrentItem(0, true)
+                    drawerLayout.closeDrawers()
+                }
+                R.id.business -> {viewPager.setCurrentItem(1,true)
+                    drawerLayout.closeDrawers()
+                }
+                R.id.science -> {viewPager.setCurrentItem(2,true)
+                    drawerLayout.closeDrawers()
+                }
+                R.id.sports -> {
+                    viewPager.setCurrentItem(3, true)
+                    drawerLayout.closeDrawers()
+                }
             }
             true
+
         }
 
     }
@@ -138,10 +170,12 @@ class NewsSections : AppCompatActivity() , NewsItemClicked2{
 
 
 
+
     override fun onItemClicked(item: NewsModel) {
         val builder = CustomTabsIntent.Builder()
         val customTabsIntent = builder.build()
         customTabsIntent.launchUrl(this, Uri.parse(item.url))
     }
+
 
 }

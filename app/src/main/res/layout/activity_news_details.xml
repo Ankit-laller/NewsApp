@@ -11,22 +11,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="20dp"
-            app:cardMaxElevation="10dp"
-            app:cardPreventCornerOverlap="true">
+
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/image"/>
 
-        </androidx.cardview.widget.CardView>
 
 
 
